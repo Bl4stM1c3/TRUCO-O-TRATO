@@ -1,0 +1,64 @@
+#Posible solucion al ejercicio 44 de https://retosdeprogramacion.com/ejercicios
+#Este es un reto especial por Halloween.
+# * Deberemos crear un programa al que le indiquemos si queremos realizar "Truco
+# * o Trato" y un listado (array) de personas con las siguientes propiedades:
+# * - Nombre de la niña o niño
+# * - Edad
+# * - Altura en centímetros
+# *
+# * Si las personas han pedido truco, el programa retornará sustos (aleatorios)
+# * siguiendo estos criterios:
+# * - Un susto por cada 2 letras del nombre por persona
+# * - Dos sustos por cada edad que sea un número par
+# * - Tres sustos por cada 100 cm de altura entre todas las personas
+# * - Sustos: 🎃 👻 💀 🕷 🕸 🦇
+#*
+# * Si las personas han pedido trato, el programa retornará dulces (aleatorios)
+# * siguiendo estos criterios:
+# * - Un dulce por cada letra de nombre
+# * - Un dulce por cada 3 años cumplidos hasta un máximo de 10 años por persona
+# * - Dos dulces por cada 50 cm de altura hasta un máximo de 150 cm por persona
+# * - Dulces: 🍰 🍬 🍡 🍭 🍪 🍫 🧁 🍩
+# * - En caso contrario retornará un error.
+
+import random
+
+def halloween(accion, array):
+  #Declaramos las variables
+  sustos = ["🎃", "👻", "💀", "🕷", "🕸", "🦇"]
+  dulces = ["🍰", "🍬", "🍡", "🍭", "🍪", "🍫", "🧁", "🍩"]
+  nombres = ""
+  edades = []
+  alturas = []
+
+  #Extraemos informacion del array
+  for niño in array:
+    nombres += niño["Nombre]
+    nombres_sin_espacios = "".join(nombres.split()) #Eliminamos los espacios para el caso de nombres compuestos como Jose Manuel
+    edades.append(niño["Edad"])
+    alturas.append(niño["Altura"])
+
+  #Resolvemos el problema
+  if accion == "truco":
+    #Calculamos el numero de sustos
+    cantidad_sustos = 1*(len(nombres_sin_espacios)//2) + 2 * (len([edad for edad in edades if edad//2])) + 3 * (sum(alturas)//100)
+    return random.choice(sustos, k=cantidad_sustos)
+
+  elif accion == "trato":
+    #Calculamos el numero de dulces
+    cantidad_dulces = 1*(len(nombres_sin_espacios)) + 1 * (sum([min(edad//3,10) for edad in edades])) + 2 * (sum([min(altura//50, 150) for altura in alturas]))
+    return random.choice(dulces, k=cantidad_dulces)
+  else:
+    return "Por favor, introduzca una accion válida: 'truco' o 'trato'"
+
+
+#EJEMPLO DE USO
+array = [
+    {"Nombre":"Ataulfo", "Edad":10, "Altura":120},
+    {"Nombre":"Flautista", "Edad":9, "Altura":105},
+    {"Nombre":"Rudolf", "Edad":10, "Altura":110},
+    {"Nombre":"Luis Javier", "Edad":10, "Altura":135}
+    
+]
+
+halloween("truco", array)
